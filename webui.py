@@ -147,25 +147,14 @@ def upload_file():
 def home():
     return render_template('index.html')
 
-
-def run_flask():
-    app.run(debug=False, use_reloader=False)
-
-
-def launch():
-    # Start Flask in a separate thread
-    flask_thread = threading.Thread(target=run_flask)
-    flask_thread.start()
-
-    # Open the browser
-    link = 'http://127.0.0.1:5000/'
-    webbrowser.open_new('http://127.0.0.1:5000/')
-    print(f'Opened webpage interface at: {link}')
-
-
 if __name__ == "__main__":
     load_model()
-    launch()
+    # Azure passes the port to listen on via the PORT environment variable.
+    # If not found, default to 8000.
+    port = int(os.environ.get('PORT', 8000))
+    # Host must be 0.0.0.0 to be accessible outside the container
+    app.run(host='0.0.0.0', port=port)
+
     
     #image = Image.open("C:/Users/Tristan/Pictures/6f30d53506600951da6effea9cd16833_planetary-landscape-alien-landscape-planets-mountains-clouds-fantasy-planet-drawing_3840-2160.jpg")
     #predict(image)
